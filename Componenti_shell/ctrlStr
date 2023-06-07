@@ -1,0 +1,7 @@
+
+#controllo che il parametro {num} sia una stringa e non contenga il carattere /
+case {num} in
+	*/*) echo ERRORE, {num} non deve contenere il carattere \/
+	     {exit num} ;;
+esac
+S={num}	#nome specificato nel testo

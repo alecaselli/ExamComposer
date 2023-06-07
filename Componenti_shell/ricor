@@ -1,0 +1,10 @@
+
+#ciclo per l'esplorazione ricorsiva della gerarchia
+for i in *
+do
+	if test -d $i -a -x $i
+	then
+		#invocazione ricorsiva passando sempre il nome assoluto della dir
+		$0 `pwd`/$i $2 $3
+	fi
+done

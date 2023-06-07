@@ -1,0 +1,4 @@
+
+#controlli sui parametri finiti, possiamo passare alle Q fasi, dopo aver settato il PATH
+PATH=`pwd`:$PATH
+export PATH

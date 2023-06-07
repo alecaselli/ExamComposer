@@ -1,0 +1,14 @@
+
+#ora in $* abbbiamo solo i nomi delle gerarchie e quindi possiamo fare i controlli sui nomi assoluti e sulle directory in un ciclo for
+for G in $*
+do
+	case $G in
+		/*) if test ! -d $G -o ! -x $G
+		    then
+			 echo $G non directory o non traversabile
+			 {exit num}
+		    fi ;;
+		*)  echo $G non nome assoluto
+		    {exit num} ;;
+	esac
+done
