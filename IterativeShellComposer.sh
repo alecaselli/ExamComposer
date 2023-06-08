@@ -3,6 +3,8 @@
 echo "Benvenuto nello script per la compilazione assistita dell'esame di Sistemi Operativi"
 echo "Iniziamo subito!"
 
+scriptPos=`pwd`
+
 #mi posiziono all'interno della cartella creata dal curl
 target=/home/`whoami`/Scrivania/studente*	#se la lingua impostata è inglese, sostituire "Scrivania" con "Desktop"
 cd $target
@@ -20,19 +22,18 @@ echo '#!/bin/sh' >> FCP.sh
 echo '#!/bin/sh' >> FCR.sh
 
 #leggo da standard input il numero di parametri richiesto dall'utente
-P=0
 echo "Quanti sono i parametri minimi richiesti?"
 read P
 
 #creo due file temporanei necessari per la gestione della sezione sul controllo del numero dei parametri
->/tmp/filetemp
->/tmp/modtemp
+>/tmp/fileTemp
+>/tmp/modTemp
 
 #stampo all'interno di modtemp, senza andare a capo, 0 in quanto i parametri non possono mai essere nulli
-echo -n "0" >> /tmp/modtemp
+echo -n "0" >> /tmp/modTemp
 
 #copio il contenuto del file componente "ctrlPar" dentro filetemp così da poterci lavorare senza rovinare l'originale
-cat /home/cas/SO/ShellComposer/Componenti_shell/ctrlPar > /tmp/filetemp
+cat $scriptPos/Componenti_shell/.ctrlPar > /tmp/fileTemp
 
 i=1
 
@@ -41,19 +42,17 @@ while true
 do
 	if [ $i -eq $P ]
 	then
-		sed -i s/{parametri}/`cat /tmp/modtemp`/g /tmp/filetemp
-		cat /tmp/filetemp >> FCP.sh
+		sed -i s/{parametri}/`cat /tmp/modTemp`/g /tmp/fileTemp
+		cat /tmp/fileTemp >> FCP.sh
 		break
 	fi
-	echo -n "|$i" >> /tmp/modtemp
+	echo -n "|$i" >> /tmp/modTemp
 	i=`expr $i + 1`
 done
 
-rm /tmp/modtemp
+rm /tmp/modTemp
 
 i=1
-C=S
-
 while true
 do
 	echo "Vuoi inserire un nuovo componente (Y/N)?"
@@ -61,7 +60,7 @@ do
 
 	case $C in
 		S|s|Y|y) echo "Inserire uno tra i seguenti componenti:"
-			 cd /home/cas/SO/ShellComposer/Componenti_shell
+			 cd $scriptPos/Componenti_shell
 			 ls
 			 read C
 			 if [ ! -f $C ]
@@ -69,10 +68,10 @@ do
 				echo "$C non componente o scritto sbagliato"
 				continue
 			 fi
-			 cat `pwd`/$C > /tmp/filetemp
-			 sed -i s/{num}/'$'$i/g /tmp/filetemp
+			 cat `pwd`/$C > /tmp/fileTemp
+			 sed -i s/{num}/'$'$i/g /tmp/fileTemp
 			 cd $target
-			 cat < /tmp/filetemp >> FCP.sh
+			 cat < /tmp/fileTemp >> FCP.sh
 			 i=`expr $i + 1`
 			 echo "Componente $C inserita correttamente" ;;
 		N|n) break ;;
@@ -92,9 +91,9 @@ read C
 case $C in
 	S|s|Y|y) echo "Che lettera vuoi utilizzare?"
 		 read L
-		 cat /home/cas/SO/ShellComposer/Componenti_shell/ctrlGer > /tmp/filetemp
-		 sed -i s/{lettera}/$L/g /tmp/filetemp
-		 cat < /tmp/filetemp >> FCP.sh
+		 cat $scriptPos/Componenti_shell/.ctrlGer > /tmp/fileTemp
+		 sed -i s/{lettera}/$L/g /tmp/fileTemp
+		 cat < /tmp/fileTemp >> FCP.sh
 		 echo "Controllo delle gerarchie inserito correttamente" ;;
 	N|n) ;;
 esac
@@ -114,13 +113,13 @@ do
         j=`expr $j + 1`
 done
 
-cat /home/cas/SO/ShellComposer/Componenti_shell/path >> FCP.sh
-cat /home/cas/SO/ShellComposer/Componenti_shell/ricor >> FCR.sh
+cat $scriptPos/Componenti_shell/.path >> FCP.sh
+cat $scriptPos/Componenti_shell/.ricor >> FCR.sh
 
 echo " " >> FCP.sh
 echo '#Ricorda di rimuovere eventuali file temporanei e chiamare la parte C' >> FCP.sh
 
-rm /tmp/filetemp
+rm /tmp/fileTemp
 
 #cose da aggiungere
 #nella parte del controllo del numero il range
