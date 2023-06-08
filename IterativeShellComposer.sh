@@ -126,6 +126,9 @@ rm /tmp/filetemp
 #nella parte del controllo del numero il range
 #in ciascuna parte deve venire chiesta la lettera della prova
 #rendere control par, path, ricor, invisibili con il . all'inizio
+#aggiungere chiamata al file ricorsivo in base ai parametri inseriti
 
 #CORREZIONE: gli shift sono necessari solo per i valori che si salvano
 
+#IDEA: invece di copiare in happend dei file di testo creare degli script secondari che elaborino
+#il loro specifico settore così da inserire lì direttamente la richiesta riguardo le lettere etc
