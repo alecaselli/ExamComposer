@@ -21,36 +21,11 @@ chmod a+x FCR.sh
 echo '#!/bin/sh' >> FCP.sh
 echo '#!/bin/sh' >> FCR.sh
 
-#leggo da standard input il numero di parametri richiesto dall'utente
-echo "Quanti sono i parametri minimi richiesti?"
-read P
-
-#creo due file temporanei necessari per la gestione della sezione sul controllo del numero dei parametri
+#creo un file temporaneo su cui appoggiarmi per copiare e modificare i singoli componenti
 >/tmp/fileTemp
->/tmp/modTemp
 
-#stampo all'interno di modtemp, senza andare a capo, 0 in quanto i parametri non possono mai essere nulli
-echo -n "0" >> /tmp/modTemp
-
-#copio il contenuto del file componente "ctrlPar" dentro filetemp così da poterci lavorare senza rovinare l'originale
-cat $scriptPos/Componenti_shell/.ctrlPar > /tmp/fileTemp
-
-i=1
-
-#eseguo un ciclo che inserisca dentro il primo caso del case il numero corretto di parametri
-while true
-do
-	if [ $i -eq $P ]
-	then
-		sed -i s/{parametri}/`cat /tmp/modTemp`/g /tmp/fileTemp
-		cat /tmp/fileTemp >> FCP.sh
-		break
-	fi
-	echo -n "|$i" >> /tmp/modTemp
-	i=`expr $i + 1`
-done
-
-rm /tmp/modTemp
+#avvio lo script per la compilazione del case riguardante il numero dei parametri
+sh $scriptPos/Componenti_shell/ctrlPar $scriptPos
 
 i=1
 while true

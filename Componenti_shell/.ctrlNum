@@ -1,0 +1,12 @@
+
+#controllo che il parametro {num} sia un numero e che sia strettamente positivo
+case {num} in
+	*[!0-9]*) echo ERRORE, {num} non numero o non positivo
+		  {exit num} ;;
+	*) if test {num} -eq 0
+	   then 
+		echo ERRORE, primo parametro {num} uguale a zero
+		{exit num}
+	   fi ;;
+esac
+{lettera}={num}	#nome specificato nel testo

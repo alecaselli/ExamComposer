@@ -1,7 +1,0 @@
-
-#controllo che il parametro {num} sia un singolo carattere
-case {num} in
-	?) echo carattere {num} ;;
-	*) echo {num} non singolo carattere
-	   {exit num} ;;
-esac
