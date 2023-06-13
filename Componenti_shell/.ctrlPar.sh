@@ -1,6 +1,6 @@
 #/!bin/sh
 
-scriptPos=$1
+target=$1
 
 #creo un file temporaneo ulteriore dove inserire il numero di parametri da inserire nel case
 >/tmp/modTemp
@@ -13,7 +13,7 @@ read P
 echo -n "0" >> /tmp/modTemp
 
 #copio il contenuto del file componente "ctrlPar" dentro filetemp così da poterlo modificare
-cat $scriptPos/Componenti_shell/.ctrlPar > /tmp/fileTemp
+cat .ctrlPar > /tmp/fileTemp
 
 i=1
 
@@ -23,7 +23,7 @@ do
         if [ $i -eq $P ]
         then
                 sed -i s/{parametri}/`cat /tmp/modTemp`/g /tmp/fileTemp
-                cat /tmp/fileTemp >> FCP.sh
+                cat /tmp/fileTemp >> $target/FCP.sh
                 break
         fi
         echo -n "|$i" >> /tmp/modTemp

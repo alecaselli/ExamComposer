@@ -5,3 +5,4 @@ case {num} in
 	*) echo {num} non singolo carattere
 	   {exit num} ;;
 esac
+{lettera}={num} #nome specificato nel testo

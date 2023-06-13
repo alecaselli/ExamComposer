@@ -4,4 +4,4 @@ case {num} in
 	*/*) echo ERRORE, {num} non deve contenere il carattere \/
 	     {exit num} ;;
 esac
-S={num}	#nome specificato nel testo
+{lettera}={num}	#nome specificato nel testo

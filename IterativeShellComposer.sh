@@ -8,24 +8,26 @@ scriptPos=`pwd`
 #mi posiziono all'interno della cartella creata dal curl
 target=/home/`whoami`/Scrivania/studente*	#se la lingua impostata è inglese, sostituire "Scrivania" con "Desktop"
 cd $target
+target=`pwd`
+
+cd $scriptPos/Componenti_shell
 
 #creo i file FCP.sh e FCR.sh
->FCP.sh
->FCR.sh
+>$target/FCP.sh
+>$target/FCR.sh
 
 #modifico le autorizzazioni per consentire l'esecuzione dei file
-chmod a+x FCP.sh
-chmod a+x FCR.sh
+chmod a+x $target/FCP.sh $target/FCR.sh
 
 #stampo lo shabang all'interno dei file
-echo '#!/bin/sh' >> FCP.sh
-echo '#!/bin/sh' >> FCR.sh
+echo '#!/bin/sh' >> $target/FCP.sh
+echo '#!/bin/sh' >> $target/FCR.sh
 
 #creo un file temporaneo su cui appoggiarmi per copiare e modificare i singoli componenti
 >/tmp/fileTemp
 
 #avvio lo script per la compilazione del case riguardante il numero dei parametri
-sh $scriptPos/Componenti_shell/ctrlPar $scriptPos
+sh .ctrlPar.sh $target
 
 i=1
 while true
@@ -35,45 +37,44 @@ do
 
 	case $C in
 		S|s|Y|y) echo "Inserire uno tra i seguenti componenti:"
-			 cd $scriptPos/Componenti_shell
 			 ls
+
 			 read C
 			 if [ ! -f $C ]
 			 then
 				echo "$C non componente o scritto sbagliato"
 				continue
 			 fi
-			 cat `pwd`/$C > /tmp/fileTemp
-			 sed -i s/{num}/'$'$i/g /tmp/fileTemp
-			 cd $target
-			 cat < /tmp/fileTemp >> FCP.sh
-			 i=`expr $i + 1`
-			 echo "Componente $C inserita correttamente" ;;
+
+			 sh $C $i $target
+
+			 if [ $? -ne 0 ]
+			 then
+				continue
+			 fi
+
+			 i=`expr $i + 1` ;;
 		N|n) break ;;
 	esac
 done
 
-echo " " >> FCP.sh
+echo " " >> $target/FCP.sh
 
 while [ $i -ne 1 ]
 do
-	echo "shift" >> FCP.sh
+	echo "shift" >> $target/FCP.sh
 	i=`expr $i - 1`
 done
 
 echo "Vuoi inserire il controllo delle gerarchie (Y/N)?"
-read C
-case $C in
-	S|s|Y|y) echo "Che lettera vuoi utilizzare?"
-		 read L
-		 cat $scriptPos/Componenti_shell/.ctrlGer > /tmp/fileTemp
-		 sed -i s/{lettera}/$L/g /tmp/fileTemp
-		 cat < /tmp/fileTemp >> FCP.sh
-		 echo "Controllo delle gerarchie inserito correttamente" ;;
+read G
+
+case $G in
+	S|s|Y|y) sh .ctrlGer.sh $target ;;
 	N|n) ;;
 esac
 
-val=`grep -c "{exit num}" FCP.sh`
+val=`grep -c "{exit num}" $target/FCP.sh`
 val=`expr $val + 1`
 
 j=1
@@ -84,15 +85,15 @@ do
         then
                 break
         fi
-        sed -i -e "0,/{exit num}/ s/{exit num}/exit $j/" FCP.sh
+        sed -i -e "0,/{exit num}/ s/{exit num}/exit $j/" $target/FCP.sh
         j=`expr $j + 1`
 done
 
-cat $scriptPos/Componenti_shell/.path >> FCP.sh
-cat $scriptPos/Componenti_shell/.ricor >> FCR.sh
+cat .path >> $target/FCP.sh
+cat .ricor >> $target/FCR.sh
 
-echo " " >> FCP.sh
-echo '#Ricorda di rimuovere eventuali file temporanei e chiamare la parte C' >> FCP.sh
+echo " " >> $target/FCP.sh
+echo '#Ricorda di rimuovere eventuali file temporanei e chiamare la parte C' >> $target/FCP.sh
 
 rm /tmp/fileTemp
 

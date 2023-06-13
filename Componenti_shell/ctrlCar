@@ -1,0 +1,15 @@
+#!/bin/sh
+
+val=$1
+target=$2
+
+cat .ctrlCar > /tmp/fileTemp
+
+echo "Che lettera vuoi utilizzare?"
+read L
+
+sed -i s/{lettera}/$L/g /tmp/fileTemp
+sed -i s/{num}/'$'$val/g /tmp/fileTemp
+cat < /tmp/fileTemp >> $target/FCP.sh
+
+echo "Componente $0 inserito correttamente"

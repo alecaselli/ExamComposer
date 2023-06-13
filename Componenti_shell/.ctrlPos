@@ -9,4 +9,4 @@ case {num} in
 		{exit num}
 	   fi ;;
 esac
-W={num}	#nome specificato nel testo
+{lettera}={num}	#nome specificato nel testo

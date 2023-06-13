@@ -1,18 +1,32 @@
 #!/bin/sh
 
+val=$1
+target=$2
+
 while true
 do
 	echo "Quale versione ti serve?"
+
+	echo "1. Numero intero strettamente positivo"
+	echo "2. Numero compreso in un range"
+
 	read V
-
-	echo 1. Numero intero strettamente positivo
-	echo 2. Numero compreso in un range
-
 	case $V in
-		1)
+		1) cat .ctrlNum > /tmp/fileTemp
+		   break ;;
 		2) echo "Inserisci il numero minimo accettato"
 		   read L
-		   #sostituire nel file ctrlRng il valore affianco a -lt con L
-		*) echo "$V non numero o non corretto"
+		   cat .ctrlRng > /tmp/fileTemp
+		   sed -i s/{limite}/$V/g /tmp/fileTemp
+		   break ;;
+		*) echo "$V non numero o non corretto" ;;
 	esac
 done
+
+echo "Che lettera vuoi utilizzare?"
+read L
+
+sed -i s/{lettera}/$L/g /tmp/fileTemp
+sed -i s/{num}/'$'$val/g /tmp/fileTemp
+cat < /tmp/fileTemp >> $target/FCP.sh
+echo "Componente $0 inserita correttamente"
