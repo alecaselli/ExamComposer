@@ -15,9 +15,9 @@ do
 		1) cat .ctrlNum > /tmp/fileTemp
 		   break ;;
 		2) echo "Inserisci il numero minimo accettato"
-		   read L
+		   read N
 		   cat .ctrlRng > /tmp/fileTemp
-		   sed -i s/{limite}/$V/g /tmp/fileTemp
+		   sed -i s/{limite}/$N/g /tmp/fileTemp
 		   break ;;
 		*) echo "$V non numero o non corretto" ;;
 	esac

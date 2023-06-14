@@ -117,7 +117,4 @@ echo '#Ricorda di rimuovere eventuali file temporanei e chiamare la parte C' >> 
 rm /tmp/fileTemp
 rm /tmp/lettersTemp
 
-#cose da aggiungere
-
 #CORREZIONE: controllare il valore del range nel caso 2 del ctrlNum
-#CORREZIONE: gli shift sono necessari solo per i valori che si salvano
