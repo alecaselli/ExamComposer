@@ -1,4 +1,4 @@
-#/!bin/sh
+#/!bin/bash
 
 echo "Benvenuto nello script per la compilazione assistita dell'esame di Sistemi Operativi"
 echo "Iniziamo subito!"
@@ -25,35 +25,52 @@ echo '#!/bin/sh' >> $target/FCR.sh
 
 #creo un file temporaneo su cui appoggiarmi per copiare e modificare i singoli componenti
 >/tmp/fileTemp
+>/tmp/lettersTemp
 
 #avvio lo script per la compilazione del case riguardante il numero dei parametri
-sh .ctrlPar.sh $target
+bash .ctrlPar.sh $target
+
+componente=(*)
 
 i=1
+
 while true
 do
 	echo "Vuoi inserire un nuovo componente (Y/N)?"
-	read C
+	read D
 
-	case $C in
+	case $D in
 		S|s|Y|y) echo "Inserire uno tra i seguenti componenti:"
-			 ls
+			 j=1
+                         for cmp in ${componente[*]}
+                         do
+                                echo -n "$j.$cmp "
+                                j=`expr $j + 1`
+                         done
+                         echo ""
 
-			 read C
-			 if [ ! -f $C ]
-			 then
-				echo "$C non componente o scritto sbagliato"
-				continue
-			 fi
+                         read C
 
-			 sh $C $i $target
+                         C=`expr $C - 1`
 
-			 if [ $? -ne 0 ]
-			 then
-				continue
-			 fi
+			 case $C in
+			 *[!0-9]*) echo "$C non numero o non corretto"
+				   continue ;;
+			 *) if [ ${#componente[*]} -lt $C ]
+			    then
+				  echo "$C non disponibile"
+				  continue
+			    fi ;;
+			 esac
 
-			 i=`expr $i + 1` ;;
+                         bash ${componente["$C"]} $i $target
+
+                         if [ $? -ne 0 ]
+                         then
+                                continue
+                         fi
+
+                         i=`expr $i + 1` ;;
 		N|n) break ;;
 	esac
 done
@@ -70,7 +87,7 @@ echo "Vuoi inserire il controllo delle gerarchie (Y/N)?"
 read G
 
 case $G in
-	S|s|Y|y) sh .ctrlGer.sh $target ;;
+	S|s|Y|y) bash .ctrlGer.sh $target ;;
 	N|n) ;;
 esac
 
@@ -90,20 +107,17 @@ do
 done
 
 cat .path >> $target/FCP.sh
+bash .call.sh $target
+
 cat .ricor >> $target/FCR.sh
 
 echo " " >> $target/FCP.sh
 echo '#Ricorda di rimuovere eventuali file temporanei e chiamare la parte C' >> $target/FCP.sh
 
 rm /tmp/fileTemp
+rm /tmp/lettersTemp
 
 #cose da aggiungere
-#nella parte del controllo del numero il range
-#in ciascuna parte deve venire chiesta la lettera della prova
-#rendere control par, path, ricor, invisibili con il . all'inizio
-#aggiungere chiamata al file ricorsivo in base ai parametri inseriti
 
+#CORREZIONE: controllare il valore del range nel caso 2 del ctrlNum
 #CORREZIONE: gli shift sono necessari solo per i valori che si salvano
-
-#IDEA: invece di copiare in happend dei file di testo creare degli script secondari che elaborino
-#il loro specifico settore così da inserire lì direttamente la richiesta riguardo le lettere etc

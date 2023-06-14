@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 val=$1
 target=$2
@@ -11,5 +11,7 @@ read L
 sed -i s/{lettera}/$L/g /tmp/fileTemp
 sed -i s/{num}/'$'$val/g /tmp/fileTemp
 cat < /tmp/fileTemp >> $target/FCP.sh
+
+echo -n "\$$L "  >> /tmp/lettersTemp
 
 echo "Componente $0 inserito correttamente"
