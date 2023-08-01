@@ -1,14 +1,51 @@
 #/!bin/bash
 
-echo "Benvenuto nello script per la compilazione assistita dell'esame di Sistemi Operativi"
-echo "Iniziamo subito!"
+#definisco shorcut per i colori
+orange='\033[33m'
+green='\032[33m'
+blue='\034[33m'
+red='\031[33m'
 
+echo -e "${orange}Benvenuto nello script per la compilazione assistita dell'esame di Sistemi Operativi"
+echo -e "Iniziamo subito!"
+
+#creo un riferimento alla posizione dello script
 scriptPos=`pwd`
 
-#mi posiziono all'interno della cartella creata dal curl
+#creo un riferimento alla cartella creata dal curl
 target=/home/`whoami`/Scrivania/studente*	#se la lingua impostata è inglese, sostituire "Scrivania" con "Desktop"
 cd $target
-target=`pwd`
+
+#creo una variabile per tenere conto della presenza o meno di file FCP.sh o FCR.sh
+presente=0
+
+#controllo la presenza dei file
+for p in *
+do
+        case $p in
+                FCP.sh) presente=1 ;;
+                FCR.sh) presente=1 ;;
+                *) ;;
+        esac
+done
+
+#richiesta all'utente se vuole crearne di nuovi o uscire dallo script
+if [ $presente -eq 1 ]
+then
+        echo "Sono già presenti dei file FCP.sh o FCR.sh, vuoi sovrascriverli? (Y/N)"
+        read S
+
+        while true
+        do
+                case $S in
+                        S|s|Y|y) echo "Procedo alla sovrascrittura..."
+                                 break ;;
+                        N|n) echo "File non sovrascritti, lo script verrà interrotto..." 
+                             exit 1 ;;
+                        *) echo "Perfavore inserire una risposta valida (Y/N)" ;;
+                esac
+        done
+fi
 
 cd $scriptPos/Componenti_shell
 
@@ -30,10 +67,10 @@ echo '#!/bin/sh' >> $target/FCR.sh
 #avvio lo script per la compilazione del case riguardante il numero dei parametri
 bash .ctrlPar.sh $target
 
+#creo un array che conterrà tutti i componenti dello script
 componente=(*)
 
 i=1
-
 while true
 do
 	echo "Vuoi inserire un nuovo componente (Y/N)?"
@@ -51,10 +88,8 @@ do
 
                          read C
 
-                         C=`expr $C - 1`
-
 			 case $C in
-			 *[!0-9]*) echo "$C non numero o non corretto"
+			 *[!1-9]*) echo "$C non numero o non corretto"
 				   continue ;;
 			 *) if [ ${#componente[*]} -lt $C ]
 			    then
@@ -62,6 +97,9 @@ do
 				  continue
 			    fi ;;
 			 esac
+
+                         C=`expr $C - 1`
+
 
                          bash ${componente["$C"]} $i $target
 
@@ -117,4 +155,5 @@ echo '#Ricorda di rimuovere eventuali file temporanei e chiamare la parte C' >> 
 rm /tmp/fileTemp
 rm /tmp/lettersTemp
 
-#CORREZIONE: controllare il valore del range nel caso 2 del ctrlNum
+cp /makefile $target/makefile
+> $target/main.c

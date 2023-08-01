@@ -8,15 +8,21 @@ do
 	echo "Quale versione ti serve?"
 
 	echo "1. Numero intero strettamente positivo"
-	echo "2. Numero compreso in un range"
+	echo "2. Numero intero maggiore di un numero specificato"
+	echo "3. Numero intero compreso in un range"
 
 	read V
 	case $V in
 		1) cat .ctrlNum > /tmp/fileTemp
 		   break ;;
-		2) echo "Inserisci il numero minimo accettato"
+		2) echo "Inserisci il numero minimo accettato (compreso)"
 		   read N
-		   cat .ctrlRng > /tmp/fileTemp
+		   cat .ctrlRngNeg > /tmp/fileTemp
+		   sed -i s/{limite}/$N/g /tmp/fileTemp
+		   break ;;
+		3) echo "Inserisci il valore massimo del range (compreso)"
+		   read N
+		   cat .ctrlRngPos > /tmp/fileTemp
 		   sed -i s/{limite}/$N/g /tmp/fileTemp
 		   break ;;
 		*) echo "$V non numero o non corretto" ;;

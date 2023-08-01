@@ -1,0 +1,12 @@
+
+#controllo che il parametro {num} sia un numero positivo e contenuto all'interno del range specificato
+case {num} in
+	*[!0-9]*) echo ERRORE, {num} non numero o non positivo
+		  {exit num} ;;
+	*) if test {num} -lt {limite}
+	   then 
+		echo ERRORE, primo parametro {num} inferiore a {limite}
+		{exit num}
+	   fi ;;
+esac
+{lettera}={num}	#nome specificato nel testo
