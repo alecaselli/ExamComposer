@@ -1,11 +1,19 @@
 #!/bin/bash
 
+#definisco shorcut per i colori e i font
+#togliere 60 ai valori superiori al 90 per impostare i colori a basso contrasto
+def='\033[0m'
+orange='\033[33m\033[1m'
+green='\033[32m\033[1m'
+cyan='\033[96m\033[1m'
+red='\033[31m\033[1m'
+
 val=$1
 target=$2
 
 cat .ctrlStr > /tmp/fileTemp
 
-echo "Che lettera vuoi utilizzare?"
+echo -e "${orange}Che lettera vuoi utilizzare?${cyan}"
 read L
 
 sed -i s/{lettera}/$L/g /tmp/fileTemp
@@ -14,4 +22,4 @@ cat < /tmp/fileTemp >> $target/FCP.sh
 
 echo -n "\$$L "  >> /tmp/lettersTemp
 
-echo "Componente $0 inserito correttamente"
+echo -e "${green}Componente $0 inserito correttamente"
