@@ -167,4 +167,4 @@ rm /tmp/lettersTemp
 cp $scriptPos/Componenti_C/makefile $target/makefile
 > $target/main.c
 
-#inserire controllo sull'effetivo carattere per le lettere
+#inserire controllo sull'effetivo carattere per le lettere nei sottoscript
