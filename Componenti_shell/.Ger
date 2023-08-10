@@ -10,12 +10,35 @@ red='\033[31m\033[1m'
 
 target=$1
 
-echo -e "${orange}Che lettera vuoi utilizzare?${cyan}"
-read L
+confermato=0
+
+while true
+do
+	echo -e "${orange}Che lettera vuoi utilizzare?${cyan}"
+	read L
+
+	while true
+	do
+		echo -e "${orange}Hai scritto \"$L\", confermi? (Y/N)${cyan}"
+		read Q
+
+		case $Q in
+			s|S|y|Y) confermato=1 
+					 break ;;
+			n|N) break ;;
+			*) echo -e "${red}Perfavore inserisci una risposta valida" ;;
+		esac
+	done
+
+	if [ $confermato -eq 1 ]
+	then
+		break
+	fi
+done
 
 cat .ctrlGer > /tmp/fileTemp
 sed -i s/{lettera}/$L/g /tmp/fileTemp
 cat < /tmp/fileTemp >> $target/FCP.sh
 
-echo -e "${green}Controllo delle gerarchie inserito correttamente"
+echo -e "${green}Controllo delle gerarchie inserito correttamente!"
 

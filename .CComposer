@@ -48,5 +48,9 @@ echo ""
 
 cd $scriptPos/Componenti_shell
 
+#copio il makefile
+echo -e "${def}Copio il makefile...
 cp $scriptPos/Componenti_C/makefile $target/makefile
+
+#creo il file main.c nella cartella target
 > $target/main.c

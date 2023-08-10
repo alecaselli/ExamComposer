@@ -115,6 +115,7 @@ do
                          i=`expr $i + 1` ;;
 		N|n) echo ""
                      break ;;
+                *) echo -e "${red}Perfavore inserisci una risposta valida" ;;
 	esac
 done
 
@@ -126,7 +127,6 @@ do
 	echo "shift" >> $target/FCP.sh
 	i=`expr $i - 1`
 done
-
 
 while true
 do
@@ -168,6 +168,3 @@ echo '#Ricorda di rimuovere eventuali file temporanei e chiamare la parte C' >> 
 
 rm /tmp/fileTemp
 rm /tmp/lettersTemp
-
-
-#inserire controllo sull'effetivo carattere per le lettere nei sottoscript

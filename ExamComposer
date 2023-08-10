@@ -12,8 +12,10 @@ echo -e "${def}Benvenuto nello script per la compilazione assistita dell'esame d
 echo -e "Iniziamo subito!"
 echo ""
 
-chmod +x .ShellComposer
+chmod a+x .ShellComposer
 bash .ShellComposer
 
-chmod +x .CComposer
+echo ""
+
+chmod a+x .CComposer
 bash .CComposer
