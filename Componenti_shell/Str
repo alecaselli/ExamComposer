@@ -20,6 +20,6 @@ sed -i s/{lettera}/$L/g /tmp/fileTemp
 sed -i s/{num}/'$'$val/g /tmp/fileTemp
 cat < /tmp/fileTemp >> $target/FCP.sh
 
-echo -n "\$$L "  >> /tmp/lettersTemp
+echo -n "\$$L " >> /tmp/lettersTemp
 
-echo -e "${green}Componente $0 inserito correttamente"
+echo -e "${green}Componente \"$0\" inserito correttamente!"

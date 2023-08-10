@@ -1,0 +1,52 @@
+#!/bin/bash
+
+#definisco shorcut per i colori e i font
+#togliere 60 ai valori superiori al 90 per impostare i colori a basso contrasto
+def='\033[0m'
+orange='\033[33m\033[1m'
+green='\033[32m\033[1m'
+cyan='\033[96m\033[1m'
+red='\033[31m\033[1m'
+
+#creo un riferimento alla posizione dello script
+scriptPos=`pwd`
+
+#creo un riferimento alla cartella creata dal curl
+target=/home/`whoami`/Scrivania/studente*   #se la lingua impostata è inglese, sostituire "Scrivania" con "Desktop"
+cd $target
+
+#creo una variabile per tenere conto della presenza o meno del file main.c
+presente=0
+
+#controllo la presenza dei file
+for p in *
+do
+        case $p in
+                main.c) presente=1 ;;
+                *) ;;
+        esac
+done
+
+#richiesta all'utente se vuole crearne di nuovi o uscire dallo script
+if [ $presente -eq 1 ]
+then
+        while true
+        do
+                echo -e "${orange}E' già presente un file main.c, vuoi sovrascriverlo? (Y/N)${cyan}"
+                read S
+                
+                case $S in
+                        S|s|Y|y) echo -e "${def}Procedo alla sovrascrittura..."
+                                 break ;;
+                        N|n) echo -e "${def}File non sovrascritto, lo script verrà interrotto..." 
+                             exit 1 ;;
+                        *) echo -e "${red}Perfavore inserisci una risposta valida" ;;
+                esac
+        done
+fi
+echo ""
+
+cd $scriptPos/Componenti_shell
+
+cp $scriptPos/Componenti_C/makefile $target/makefile
+> $target/main.c

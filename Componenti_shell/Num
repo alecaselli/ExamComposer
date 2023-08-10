@@ -13,7 +13,7 @@ target=$2
 
 while true
 do
-	echo -e "${orange}Quale versione ti serve?"
+	echo -e "${orange}Quale versione ti serve?${def}"
 
 	echo "1. Numero intero strettamente positivo"
 	echo "2. Numero intero maggiore di un numero specificato"
@@ -33,7 +33,7 @@ do
 		   cat .ctrlRngPos > /tmp/fileTemp
 		   sed -i s/{limite}/$N/g /tmp/fileTemp
 		   break ;;
-		*) echo -e "${red}$V non numero o non corretto" ;;
+		*) echo -e "${red}$V non numero o non disponibile" ;;
 	esac
 done
 
@@ -44,6 +44,6 @@ sed -i s/{lettera}/$L/g /tmp/fileTemp
 sed -i s/{num}/'$'$val/g /tmp/fileTemp
 cat < /tmp/fileTemp >> $target/FCP.sh
 
-echo -n "\$$L "  >> /tmp/lettersTemp
+echo -n "\$$L " >> /tmp/lettersTemp
 
-echo -e "${green}Componente $0 inserita correttamente"
+echo -e "${green}Componente \"$0 ver. $V\" inserita correttamente!" 

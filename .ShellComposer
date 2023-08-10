@@ -1,4 +1,4 @@
-#/!bin/bash
+#!/bin/bash
 
 #definisco shorcut per i colori e i font
 #togliere 60 ai valori superiori al 90 per impostare i colori a basso contrasto
@@ -8,15 +8,11 @@ green='\033[32m\033[1m'
 cyan='\033[96m\033[1m'
 red='\033[31m\033[1m'
 
-echo -e "${def}Benvenuto nello script per la compilazione assistita dell'esame di Sistemi Operativi"
-echo -e "Iniziamo subito!"
-echo ""
-
 #creo un riferimento alla posizione dello script
 scriptPos=`pwd`
 
 #creo un riferimento alla cartella creata dal curl
-target=/home/`whoami`/Scrivania/studente*	#se la lingua impostata è inglese, sostituire "Scrivania" con "Desktop"
+target=/home/`whoami`/Scrivania/studente*       #se la lingua impostata è inglese, sostituire "Scrivania" con "Desktop"
 cd $target
 
 #creo una variabile per tenere conto della presenza o meno di file FCP.sh o FCR.sh
@@ -45,7 +41,7 @@ then
                                  break ;;
                         N|n) echo -e "${def}File non sovrascritti, lo script verrà interrotto..." 
                              exit 1 ;;
-                        *) echo -e "${red}Perfavore inserire una risposta valida$" ;;
+                        *) echo -e "${red}Perfavore inserisci una risposta valida" ;;
                 esac
         done
 fi
@@ -69,7 +65,7 @@ echo '#!/bin/sh' >> $target/FCR.sh
 >/tmp/lettersTemp
 
 #avvio lo script per la compilazione del case riguardante il numero dei parametri
-bash .ctrlPar.sh $target
+bash .Par $target
 
 echo -e "${def}"
 
@@ -83,7 +79,7 @@ do
 	read D
 
 	case $D in
-		S|s|Y|y) echo -e "${orange}Inserire uno tra i seguenti componenti:"
+		S|s|Y|y) echo -e "${orange}Inserisci uno tra i seguenti componenti:${def}"
 			 j=1
                          for cmp in ${componente[*]}
                          do
@@ -124,19 +120,28 @@ done
 
 echo " " >> $target/FCP.sh
 
+#scrivo tanti shift quante le componenti utilizzate
 while [ $i -ne 1 ]
 do
 	echo "shift" >> $target/FCP.sh
 	i=`expr $i - 1`
 done
 
-echo -e "${orange}Vuoi inserire il controllo delle gerarchie (Y/N)?${cyan}"
-read G
 
-case $G in
-	S|s|Y|y) bash .ctrlGer.sh $target ;;
-	N|n) ;;
-esac
+while true
+do
+        echo -e "${orange}Vuoi inserire il controllo delle gerarchie (Y/N)?${cyan}"
+        read G
+        
+        case $G in
+                S|s|Y|y) bash .Ger $target
+                         break ;;
+                N|n) echo -e "${def}Controllo delle gerarchie NON inserito!" 
+                     break ;;
+                *) echo -e "${red}Perfavore inserisci una risposta valida" ;;
+        esac
+done
+
 
 val=`grep -c "{exit num}" $target/FCP.sh`
 val=`expr $val + 1`
@@ -154,7 +159,7 @@ do
 done
 
 cat .path >> $target/FCP.sh
-bash .call.sh $target
+bash .Call $target
 
 cat .ricor >> $target/FCR.sh
 
@@ -164,7 +169,5 @@ echo '#Ricorda di rimuovere eventuali file temporanei e chiamare la parte C' >> 
 rm /tmp/fileTemp
 rm /tmp/lettersTemp
 
-cp $scriptPos/Componenti_C/makefile $target/makefile
-> $target/main.c
 
 #inserire controllo sull'effetivo carattere per le lettere nei sottoscript

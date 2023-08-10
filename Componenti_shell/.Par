@@ -1,4 +1,4 @@
-#/!bin/bash
+#!/bin/bash
 
 #definisco shorcut per i colori e i font
 #togliere 60 ai valori superiori al 90 per impostare i colori a basso contrasto

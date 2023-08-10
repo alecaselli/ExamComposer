@@ -22,5 +22,5 @@ cat < /tmp/fileTemp >> $target/FCP.sh
 
 echo -n "\$$L " >> /tmp/lettersTemp
 
-echo -e "${green}Componente $0 inserito correttamente"
+echo -e "${green}Componente \"$0\" inserito correttamente!"
 
