@@ -47,7 +47,7 @@ then
 fi
 echo ""
 
-cd $scriptPos/Componenti_shell
+cd $scriptPos/.Componenti_shell
 
 #creo i file FCP.sh e FCR.sh
 >$target/FCP.sh
@@ -165,6 +165,9 @@ cat .ricor >> $target/FCR.sh
 
 echo " " >> $target/FCP.sh
 echo '#Ricorda di rimuovere eventuali file temporanei e chiamare la parte C' >> $target/FCP.sh
+
+echo ""
+echo -e "${green}Parte Shell terminata!"
 
 rm /tmp/fileTemp
 rm /tmp/lettersTemp
