@@ -1,0 +1,17 @@
+#calcolo del numero di exit da dover sistemare
+val=`grep -c "{exit num}" $target/main.c`
+val=`expr $val + 1`
+
+#indice da incrementare fino al raggiungimenti di val
+j=1
+
+#ciclo che corregge i tag {exit num} con i vari exit incrementali
+while true
+do
+        if [ $j -eq $val ]
+        then
+                break
+        fi
+        sed -i -e "0,/{exit num}/ s/{exit num}/exit $j/" $target/FCP.sh
+        j=`expr $j + 1`
+done

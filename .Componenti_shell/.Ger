@@ -36,7 +36,7 @@ do
 	fi
 done
 
-cat .ctrlGer > /tmp/fileTemp
+cat .ctrlGer.txt > /tmp/fileTemp
 sed -i s/{lettera}/$L/g /tmp/fileTemp
 cat < /tmp/fileTemp >> $target/FCP.sh
 

@@ -11,7 +11,7 @@ red='\033[31m\033[1m'
 val=$1
 target=$2
 
-cat .ctrlCar > /tmp/fileTemp
+cat .ctrlCar.txt > /tmp/fileTemp
 
 confermato=0
 

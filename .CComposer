@@ -54,3 +54,12 @@ cp $scriptPos/.Componenti_C/makefile $target/makefile
 
 #creo il file main.c nella cartella target
 > $target/main.c
+
+#creo dei file temporanei su cui appoggiarmi per copiare e modificare i singoli componenti
+>/tmp/fileTemp
+>/tmp/lettersTemp
+
+#avvio lo script per l'inserimento del controllo sul numero di parametri
+bash .Par $target
+
+

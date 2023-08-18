@@ -15,7 +15,7 @@ echo ""
 chmod a+x .ShellComposer
 bash .ShellComposer
 
-echo ""
+echo -e "${def}--------------------------"
 
 chmod a+x .CComposer
 bash .CComposer

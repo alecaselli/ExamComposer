@@ -60,7 +60,7 @@ chmod a+x $target/FCP.sh $target/FCR.sh
 echo '#!/bin/sh' >> $target/FCP.sh
 echo '#!/bin/sh' >> $target/FCR.sh
 
-#creo un file temporaneo su cui appoggiarmi per copiare e modificare i singoli componenti
+#creo dei file temporanei su cui appoggiarmi per copiare e modificare i singoli componenti
 >/tmp/fileTemp
 >/tmp/lettersTemp
 
@@ -69,10 +69,13 @@ bash .Par $target
 
 echo -e "${def}"
 
-#creo un array che conterrà tutti i componenti dello script
+#creo un array contenente tutti i nomi dei file non nascosti
 componente=(*)
 
+#indice relativo al numero di componenti inseriti correttamente
 i=1
+
+#ciclo per l'inserimento di un componente aggiuntivo
 while true
 do
 	echo -e "${orange}Vuoi inserire un nuovo componente (Y/N)?${cyan}"
@@ -80,7 +83,11 @@ do
 
 	case $D in
 		S|s|Y|y) echo -e "${orange}Inserisci uno tra i seguenti componenti:${def}"
+                         
+                         #indice per il numero di componente
 			 j=1
+
+                         #ciclo per mostrare in ordine le componenti disponibili
                          for cmp in ${componente[*]}
                          do
                                 echo -n "$j.$cmp "
@@ -89,7 +96,8 @@ do
 
                          echo -e "${cyan}"
                          read C
-
+                         
+                         #controllo sulla correttezza del numero selezionato
 			 case $C in
 			 *[!1-9]*) echo -e "${red}$C non numero o non corretto${orange}"
 				   continue ;;
@@ -99,19 +107,22 @@ do
 				  continue
 			    fi ;;
 			 esac
-
+                         
+                         #correzione del numero selezionato per renderlo compatibile con gli indici reali dell'array
                          C=`expr $C - 1`
 
-
+                         #chiamata al componente selezionato
                          bash ${componente["$C"]} $i $target
-
+                         
+                         #catch su eventuali errori così da prevenire l'incremento dell'indice relativo ai componenti inseriti
                          if [ $? -ne 0 ]
                          then
                                 continue
                          fi
 
                          echo ""
-
+                         
+                         #incremento dell'indice utile a sapere quante componenti sono state inserite correttamente
                          i=`expr $i + 1` ;;
 		N|n) echo ""
                      break ;;
@@ -121,13 +132,14 @@ done
 
 echo " " >> $target/FCP.sh
 
-#scrivo tanti shift quante le componenti utilizzate
+#scrivo tanti shift quante le componenti inserite
 while [ $i -ne 1 ]
 do
 	echo "shift" >> $target/FCP.sh
 	i=`expr $i - 1`
 done
 
+#interazione con l'utente per l'inserimento o meno della componente Ger
 while true
 do
         echo -e "${orange}Vuoi inserire il controllo delle gerarchie (Y/N)?${cyan}"
@@ -142,12 +154,14 @@ do
         esac
 done
 
-
+#calcolo del numero di exit da dover sistemare
 val=`grep -c "{exit num}" $target/FCP.sh`
 val=`expr $val + 1`
 
+#indice da incrementare fino al raggiungimenti di val
 j=1
 
+#ciclo che corregge i tag {exit num} con i vari exit incrementali
 while true
 do
         if [ $j -eq $val ]
@@ -158,10 +172,11 @@ do
         j=`expr $j + 1`
 done
 
-cat .path >> $target/FCP.sh
+#varie copie di archetipi e chiamate a sottoscript
+cat .path.txt >> $target/FCP.sh
 bash .Call $target
 
-cat .ricor >> $target/FCR.sh
+cat .ricor.txt >> $target/FCR.sh
 
 echo " " >> $target/FCP.sh
 echo '#Ricorda di rimuovere eventuali file temporanei e chiamare la parte C' >> $target/FCP.sh
@@ -169,5 +184,6 @@ echo '#Ricorda di rimuovere eventuali file temporanei e chiamare la parte C' >> 
 echo ""
 echo -e "${green}Parte Shell terminata!"
 
+#rimozione dei file temporanei precedentemente creati nella root
 rm /tmp/fileTemp
 rm /tmp/lettersTemp

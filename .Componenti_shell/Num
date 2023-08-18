@@ -21,16 +21,16 @@ do
 
 	read V
 	case $V in
-		1) cat .ctrlNum > /tmp/fileTemp
+		1) cat .ctrlNum.txt > /tmp/fileTemp
 		   break ;;
 		2) echo -e "${orange}Inserisci il numero minimo accettato (compreso)${cyan}"
 		   read N
-		   cat .ctrlRngNeg > /tmp/fileTemp
+		   cat .ctrlRngNeg.txt > /tmp/fileTemp
 		   sed -i s/{limite}/$N/g /tmp/fileTemp
 		   break ;;
 		3) echo -e "${orange}Inserisci il valore massimo del range (compreso)${cyan}"
 		   read N
-		   cat .ctrlRngPos > /tmp/fileTemp
+		   cat .ctrlRngPos.txt > /tmp/fileTemp
 		   sed -i s/{limite}/$N/g /tmp/fileTemp
 		   break ;;
 		*) echo -e "${red}$V non numero o non disponibile" ;;
