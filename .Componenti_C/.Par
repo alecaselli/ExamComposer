@@ -24,10 +24,17 @@ do
 done
 
 #copio il contenuto del file componente "ctrlPar" dentro filetemp così da poterlo modificare
-cat .ctrlPar > /tmp/fileTemp
+cat .ctrlPar.txt > /tmp/fileTemp
 
-sed -i s/{parametri}/`$P`/g /tmp/fileTemp
+sed -i s/{parametri}/$P/g /tmp/fileTemp
 P=`expr $P + 1`
-sed -i s/{parametri plus}/`$P`/g /tmp/fileTemp
+sed -i -e "0,/{parametri plus}/ s/{parametri plus}/$P/" /tmp/fileTemp
 
-cat /tmp/fileTemp >> $target/main.c
+#sed -i '/fox/{
+#    s/fox//g
+#    r f.html
+#}' file.txt
+#
+#sed -i -e '/fox/{r f.html' -e 'd}'
+
+sed -i -e '/{controllo parametri}/{r /tmp/fileTemp' -e 'd}' $target/main.c

@@ -1,0 +1,87 @@
+{librerie}
+
+typedef int pipe_t[2]; // definizione del TIPO pipe_t come array di 2 interi
+
+int main(int argc, char **argv)
+{
+    int i, j, k;   //indici
+    int N;  //numero di processi
+    int pid;    //pid per fork
+    int pidFiglio, status, ritorno; //variabili per wait
+    pipe_t *piped; // array dinamico di pipe descriptors per comunicazioni figli-padre
+
+    {controllo parametri}
+
+    // salvo in una variabile il numero di fork da effetturare
+    N = argc - 2;
+
+    // allocazione dell'array di N pipe descriptos
+    piped = (pipe_t *)malloc(N * sizeof(pipe_t));
+
+    // controllo che l'array piped sia stato creato correttamente
+    if (piped == NULL)
+    {
+        printf("Errore nella allocazione della memoria\n");
+        exit(2);
+    }
+
+    // creazione delle N pipe figli-padre
+    for (j = 0; j < N; j++)
+    {
+        if (pipe(piped[j]) < 0)
+        {
+            printf("Errore nella creazione della pipe\n");
+            exit(3);
+        }
+    }
+
+    for (i = 0; i < N; i++)
+    {
+        if ((pid = fork()) < 0)
+        {
+            printf("Errore nella fork\n", i);
+            exit(5);
+        }
+
+        if (pid == 0)
+        { // codice figlio
+
+            // chiusura delle pipe non usate nella comunicazione con il padre
+            for (k = 0; k < N; k++)
+            {
+                close(piped[k][0]); // chiudo tutti i lati di lettura
+                if (k != j)
+                    close(piped[k][1]); // chiudo tutti i lati di scrittura eccetto quello usato da questo specifico figlio
+            }
+
+            exit(0);
+        }
+    }
+
+    // codice padre
+
+    // chiudo tutti i lati di scrittura delle pipe
+    for (k = 0; k < N; k++)
+    {
+        close(piped[k][1]);
+    }
+
+    // attesa della terminazione dei figli
+    for (i = 0; i < N; i++)
+    {
+        if ((pidFiglio = wait(&status)) < 0)
+        {
+            printf("Errore wait\n");
+            exit(6);
+        }
+
+        if ((status & 0xFF) != 0)
+            printf("Figlio con pid %d terminato in modo anomalo\n", pidFiglio);
+        else
+        {
+            ritorno = (int)((status >> 8) & 0xFF);
+            printf("Il figlio con pid=%d ha ritornato %c (%d se 255 problemi!)\n", pidFiglio, ritorno, ritorno); /* il padre stampa il valore ritornato come carattere; aggiunta la stampa come intero solo per intercettare un eventuale errore nel figlio */
+        }
+    }
+    exit(0);
+}

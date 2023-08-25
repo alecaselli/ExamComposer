@@ -1,0 +1,64 @@
+{librerie}
+
+int main(int argc, char **argv)
+{
+    int N;
+    int *pid;
+    int i, j;
+    int val;
+    int pidFiglio, status, ritorno;
+
+    {controllo parametri}
+
+    N = argc - 1;
+
+    pid = (int *)malloc(N * sizeof(int));
+
+    if (pid == NULL)
+    {
+        printf("Errore nella malloc\n");
+        exit(2);
+    }
+
+    for (i = 0; i < N; i++)
+    {
+        if ((pid[i] = fork()) < 0)
+        {
+            printf("Errore nella %d-esima fork\n", i);
+            exit(5);
+        }
+
+        if (pid[i] == 0)
+        {   //codice figlio
+
+            exit(val);
+        }
+    }
+
+    // codice padre
+    for (i = 0; i < N; i++)
+    {
+        if ((pidFiglio = wait(&status)) < 0)
+        {
+            printf("Errore nella %d-esima wait\n", i);
+            exit(6);
+        }
+
+        if ((status & 0xFF) != 0)
+            printf("Figlio con pid %d terminato in modo anomalo\n", pidFiglio);
+        else
+        {
+            ritorno = (int)((status >> 8) & 0xFF);
+
+            for (j = 0; j < N; j++)
+            {
+                if (pidFiglio == pid[i])
+                {
+                    printf("Il figlio con pid: %d ha ritornato %c\n", pidFiglio, ritorno);
+                    break;
+                }
+            }
+        }
+    }
+    exit(0);
+}
