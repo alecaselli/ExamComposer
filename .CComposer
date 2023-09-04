@@ -65,5 +65,10 @@ echo ""
 
 #avvio lo script per l'inserimento del controllo sul numero di parametri
 bash .Par $target
+echo ""
+
+#avvio lo script che corregge gli exit rendendoli incrementali
+echo -e "${def}Correggo gli exit..."
+bash .Ext $target
 
 #---aggiungere script librerie---

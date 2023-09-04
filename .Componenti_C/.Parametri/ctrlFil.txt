@@ -1,0 +1,6 @@
+    if ((fd = open(argv[{num}], O_RDONLY)) < 0) // controllo che un file venga aperto correttamente e lo salvo nel file descriptor
+    {
+        printf("ERRORE, il parametro %s non è un file\n", argv[{num}]);
+        {exit val};
+    }
+    

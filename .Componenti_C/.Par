@@ -10,31 +10,93 @@ red='\033[31m\033[1m'
 
 target=$1
 
+cd .Parametri
+
 while true
 do
-        #leggo da standard input il numero di parametri richiesto dall'utente
-        echo -e "${orange}Quanti sono i parametri minimi richiesti?${cyan}"
-        read P
+    #leggo da standard input il numero di parametri richiesto dall'utente
+    echo -e "${orange}Quanti sono i parametri minimi richiesti?${cyan}"
+    read P
         
-        case $P in
-        *[!0-9]*) echo -e "${red}$P non numero o non corretto"
-		  continue ;;
-	    *) break ;;
+    case $P in
+    *[!0-9]*) echo -e "${red}$P non numero o non corretto"
+	          continue ;;
+	*) break ;;
 	esac
 done
 
 #copio il contenuto del file componente "ctrlPar" dentro filetemp così da poterlo modificare
 cat .ctrlPar.txt > /tmp/fileTemp
 
+#sostituisco i tag all'interno di fileTemp con il valore scelto ed il valore scelto + 1
 sed -i s/{parametri}/$P/g /tmp/fileTemp
 P=`expr $P + 1`
 sed -i -e "0,/{parametri plus}/ s/{parametri plus}/$P/" /tmp/fileTemp
 
-#sed -i '/fox/{
-#    s/fox//g
-#    r f.html
-#}' file.txt
-#
-#sed -i -e '/fox/{r f.html' -e 'd}'
+#creo un array contenente tutti i nomi dei file non nascosti
+parametro=(*)
 
+#indice relativo al numero di componenti inseriti correttamente
+i=1
+
+#ciclo per l'inserimento di un componente aggiuntivo
+while true
+do
+	echo -e "${orange}Vuoi inserire un nuovo controllo (Y/N)?${cyan}"
+	read C
+
+	case $C in
+		S|s|Y|y) echo -e "${orange}Seleziona uno tra i seguenti controlli:${def}"
+                         
+                 #indice per il numero di componente
+			     j=1
+
+                 #ciclo per mostrare in ordine le componenti disponibili
+                 for cmp in ${parametro[*]}
+                 do
+                        str=$j.$cmp
+                        echo -n ${str%.*}
+                        echo -n " "
+                        j=`expr $j + 1`
+                 done
+
+                 echo -e "${cyan}"
+                 read P
+
+                 #controllo sulla correttezza del numero selezionato
+	             case $P in
+	                *[!1-9]*) echo -e "${red}$P non numero o non corretto${orange}"
+	             	          continue ;;
+	                *) if [ ${#parametro[*]} -lt $P ]
+	                   then
+	             	        echo -e "${red}$P non disponibile${orange}"
+	             	        continue
+	                   fi ;;
+	             esac
+                         
+                 #correzione del numero selezionato per renderlo compatibile con gli indici reali dell'array
+                 P=`expr $P - 1`
+
+	             cat ${parametro["$P"]} >> /tmp/fileTemp
+                 sed -i s/{num}/$i/g /tmp/fileTemp
+                         
+                 #catch su eventuali errori così da prevenire l'incremento dell'indice relativo ai componenti inseriti
+                 if [ $? -ne 0 ]
+                 then
+                        continue
+                 fi
+
+                 echo -e "${green}Controllo inserito correttamente!"
+                 echo ""
+                         
+                 #incremento dell'indice utile a sapere quante componenti sono state inserite correttamente
+                 i=`expr $i + 1` ;;
+		N|n) break ;;
+        *) echo -e "${red}Perfavore inserisci una risposta valida" ;;
+	esac
+done
+
+#sostiusco al tag di controllo parametri il contenuti di fileTemp
 sed -i -e '/{controllo parametri}/{r /tmp/fileTemp' -e 'd}' $target/main.c
+
+echo -e "${green}Sezione parametri conclusa!"

@@ -1,8 +1,8 @@
-    
     //controllo il numero dei parametri
     if (argc != {parametri plus}) // va aggiunto 1 perché è il nome del programma stesso
     {
         printf("ERRORE, necessari esattamente {parametri} parametri\n");
-        {exit num};
+        {exit val};
     }
+
     

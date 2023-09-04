@@ -1,0 +1,7 @@
+    if (strlen(argv[{num}]) != 1)
+    {
+        printf("ERRORE, il parametro %s non è un singolo carattere\n", argv[{num}]);
+        {exit val};
+    }
+
+    C = argv[{num}][0];

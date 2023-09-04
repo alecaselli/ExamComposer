@@ -17,7 +17,7 @@ int main(int argc, char **argv)
         if ((pid = fork()) < 0)
         {
             printf("Errore nella fork\n", i);
-            exit(5);
+            {exit val};
         }
 
         if (pid == 0)
@@ -33,7 +33,7 @@ int main(int argc, char **argv)
         if ((pidFiglio = wait(&status)) < 0)
         {
             printf("Errore nella wait\n", i);
-            exit(6);
+            {exit val};
         }
 
         if ((status & 0xFF) != 0)

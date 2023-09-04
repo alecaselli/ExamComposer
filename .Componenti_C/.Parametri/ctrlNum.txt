@@ -1,0 +1,8 @@
+    N = atoi(argv[{num}]);
+
+    if (N <= 0)
+    {
+        printf("ERRORE, il parametro %s non è un numero intero positivo\n", argv[{num}]);
+        {exit val};
+    }
+    

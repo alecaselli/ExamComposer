@@ -17,7 +17,7 @@ int main(int argc, char **argv)
     if (pid == NULL)
     {
         printf("Errore nella malloc\n");
-        exit(2);
+        {exit val};
     }
 
     for (i = 0; i < N; i++)
@@ -25,7 +25,7 @@ int main(int argc, char **argv)
         if ((pid[i] = fork()) < 0)
         {
             printf("Errore nella %d-esima fork\n", i);
-            exit(5);
+            {exit val};
         }
 
         if (pid[i] == 0)
@@ -41,7 +41,7 @@ int main(int argc, char **argv)
         if ((pidFiglio = wait(&status)) < 0)
         {
             printf("Errore nella %d-esima wait\n", i);
-            exit(6);
+            {exit val};
         }
 
         if ((status & 0xFF) != 0)

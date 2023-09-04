@@ -22,7 +22,7 @@ int main(int argc, char **argv)
     if (piped == NULL)
     {
         printf("Errore nella allocazione della memoria\n");
-        exit(2);
+        {exit val};
     }
 
     // creazione delle N pipe figli-padre
@@ -31,7 +31,7 @@ int main(int argc, char **argv)
         if (pipe(piped[j]) < 0)
         {
             printf("Errore nella creazione della pipe\n");
-            exit(3);
+            {exit val};
         }
     }
 
@@ -40,7 +40,7 @@ int main(int argc, char **argv)
         if ((pid = fork()) < 0)
         {
             printf("Errore nella fork\n", i);
-            exit(5);
+            {exit val};
         }
 
         if (pid == 0)
@@ -72,7 +72,7 @@ int main(int argc, char **argv)
         if ((pidFiglio = wait(&status)) < 0)
         {
             printf("Errore wait\n");
-            exit(6);
+            {exit val};
         }
 
         if ((status & 0xFF) != 0)
