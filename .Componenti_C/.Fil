@@ -10,7 +10,7 @@ red='\033[31m\033[1m'
 
 target=$1
 
-cd .Struttura
+cd Struttura
 
 #creo un array contenente tutti i nomi dei file non nascosti
 struttura=(*)

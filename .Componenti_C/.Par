@@ -10,7 +10,7 @@ red='\033[31m\033[1m'
 
 target=$1
 
-cd .Parametri
+cd Parametri
 
 while true
 do
