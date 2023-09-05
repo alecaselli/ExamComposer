@@ -1,6 +1,6 @@
 
 #invochiamo la parte ricorsiva passando tutti i parametri
-for i in $*
+for {lettera} in $*
 do
-	FCR.sh {parametri}
+	FCR.sh ${lettera} {parametri}
 done

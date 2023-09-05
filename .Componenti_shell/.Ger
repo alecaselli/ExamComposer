@@ -39,6 +39,7 @@ done
 cat .ctrlGer.txt > /tmp/fileTemp
 sed -i s/{lettera}/$L/g /tmp/fileTemp
 cat < /tmp/fileTemp >> $target/FCP.sh
+echo "$L" > /tmp/gerTemp
 
 echo -e "${green}Controllo delle gerarchie inserito correttamente!"
 

@@ -63,6 +63,7 @@ echo '#!/bin/sh' >> $target/FCR.sh
 #creo dei file temporanei su cui appoggiarmi per copiare e modificare i singoli componenti
 >/tmp/fileTemp
 >/tmp/lettersTemp
+>/tmp/gerTemp
 
 #avvio lo script per la compilazione del case riguardante il numero dei parametri
 bash .Par $target
@@ -187,3 +188,4 @@ echo -e "${green}Parte Shell terminata!"
 #rimozione dei file temporanei precedentemente creati nella root
 rm /tmp/fileTemp
 rm /tmp/lettersTemp
+rm /tmp/gerTemp

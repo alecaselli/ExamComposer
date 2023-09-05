@@ -4,4 +4,5 @@ target=$1
 
 cat .invkCall.txt > /tmp/fileTemp
 sed -i s/{parametri}/"`cat /tmp/lettersTemp`"/i /tmp/fileTemp
+sed -i s/{lettera}/"`cat /tmp/gerTemp`"/i /tmp/fileTemp
 cat /tmp/fileTemp >> $target/FCP.sh
