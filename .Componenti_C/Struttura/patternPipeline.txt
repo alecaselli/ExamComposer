@@ -27,7 +27,7 @@ int main(int argc, char **argv)
 	if (argc != 2)
 	{
 		printf("Numero di parametri errati, dato che argc=%d: ci vuole solo il nome di un file\n", argc);
-		exit(1);
+		{exit val};
 	}
 
 	/* creazione delle 26 pipe per la comunicazione */
@@ -36,7 +36,7 @@ int main(int argc, char **argv)
 		if(pipe(pipes[i]) < 0)
 		{
 			printf("Errore nella creazione delle pipe\n");
-			exit(2);
+			{exit val};
 		}
 	}
 
@@ -47,7 +47,7 @@ int main(int argc, char **argv)
 		if((pid[i] = fork()) < 0)
 		{
 			printf("Errore nella creazione di un figlio\n");
-			exit(3);
+			{exit val};
 		}
 		
 		if(pid[i] == 0)
@@ -118,7 +118,7 @@ int main(int argc, char **argv)
 	if (nr!=sizeof(d))
 	{
 		printf("Errore in lettura da pipe[N-1] per il padre\n");
-        	//exit(4); deciso di commentare questa exit cosÃ¬ se i figli incorrono in un qualche problema e quindi la pipeline si rompe, il padre comunque eseguira' l'attesa dei figli */
+        	//{exit val}; deciso di commentare questa exit cosÃ¬ se i figli incorrono in un qualche problema e quindi la pipeline si rompe, il padre comunque eseguira' l'attesa dei figli */
 	}
 	else 
 	{
@@ -136,7 +136,7 @@ int main(int argc, char **argv)
         	if ((pidFiglio = wait(&status)) < 0)
         	{
                 	printf("Errore in wait\n");
-                	exit(5);
+                	{exit val};
         	}
 
         	if ((status & 0xFF) != 0)

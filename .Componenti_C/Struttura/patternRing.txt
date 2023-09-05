@@ -23,7 +23,7 @@ int main(int argc, char **argv)
     if (argc < 5)
     {
         printf("Errore numero di parametri dato che argc = %d\n", argc);
-        exit(1);
+        {exit val};
     }
 
     /* ricaviamo il numero di linee del file e controlliamo che sia strettamente maggiore di 0 */
@@ -31,7 +31,7 @@ int main(int argc, char **argv)
     if (L <= 0)
     {
         printf("Errore %d non numero intero strettamente positivo\n", L);
-        exit(2);
+        {exit val};
     }
 
     /* controlliamo che i parametri a partire dal terzo siano singoli parametri */
@@ -39,7 +39,7 @@ int main(int argc, char **argv)
         if (strlen(argv[j]) != 1)
         {
             printf("Il parametro %s NON e' un singolo carattere\n", argv[j]);
-            exit(3);
+            {exit val};
         }
 
     Q = argc - 3; /* calcoliamo il numero di caratteri e quindi di processi da creare */
@@ -49,7 +49,7 @@ int main(int argc, char **argv)
     if ((pipes = (pipe_t *)malloc((Q + 1) * sizeof(pipe_t))) == NULL)
     {
         printf("Errore allocazione pipe\n");
-        exit(4);
+        {exit val};
     }
 
     /* creazione pipe */
@@ -57,7 +57,7 @@ int main(int argc, char **argv)
         if (pipe(pipes[q]) < 0)
         {
             printf("Errore creazione pipe\n");
-            exit(5);
+            {exit val};
         }
 
     /* creazione figli */
@@ -66,7 +66,7 @@ int main(int argc, char **argv)
         if ((pid = fork()) < 0)
         {
             printf("Errore creazione figlio\n");
-            exit(6);
+            {exit val};
         }
 
         if (pid == 0)
@@ -153,7 +153,7 @@ int main(int argc, char **argv)
         if (nw != sizeof(char))
         {
             printf("Padre ha scritto un numero di byte sbagliati %d\n", nw);
-            exit(7);
+            {exit val};
         }
         /* il padre quindi deve aspettare che l'ultimo figlio gli invii il 'segnale' di sincronizzazione per fare ripartire il ring */
         nr = read(pipes[Q][0], &ok, sizeof(char));
@@ -161,7 +161,7 @@ int main(int argc, char **argv)
         if (nr != sizeof(char))
         {
             printf("Padre ha letto un numero di byte sbagliati %d\n", nr);
-            exit(8);
+            {exit val};
         }
     }
 
@@ -171,7 +171,7 @@ int main(int argc, char **argv)
         if ((pidFiglio = wait(&status)) < 0)
         {
             printf("Errore in wait\n");
-            exit(9);
+            {exit val};
         }
         if ((status & 0xFF) != 0)
             printf("Figlio con pid %d terminato in modo anomalo\n", pidFiglio);
