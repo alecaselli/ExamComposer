@@ -19,12 +19,7 @@ int main(int argc, char **argv)
     int L;                          /* per valore numero linee del file */
                                     /* ATTENZIONE NOME L imposto dal testo! */
 
-    /* controllo sul numero di parametri almeno 1 file, una lunghezza e 2 caratteri */
-    if (argc < 5)
-    {
-        printf("Errore numero di parametri dato che argc = %d\n", argc);
-        {exit val};
-    }
+    {controllo parametri}
 
     /* ricaviamo il numero di linee del file e controlliamo che sia strettamente maggiore di 0 */
     L = atoi(argv[2]);
